@@ -2460,7 +2460,7 @@ extern "C" JNIEXPORT jboolean JNICALL Java_net_rpcs3_RPCS3_installKey(
     return installEdat(env, std::move(file), progressId, unwrap(env, gamePath));
   }
 
-  Progress(env, progressId).failure("Unsupported key type");
+  Progress(env, progressId).failure("File should be a valid RAP or EDAT key.");
   return false;
 }
 

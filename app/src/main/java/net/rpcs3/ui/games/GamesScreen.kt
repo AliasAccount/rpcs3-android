@@ -91,7 +91,7 @@ fun GameItem(game: Game) {
                 val fd = descriptor?.parcelFileDescriptor?.fd
 
                 if (fd != null) {
-                    val installProgress = ProgressRepository.create(context, "License Installation")
+                    val installProgress = ProgressRepository.create(context, "Game Compilation")
 
                     game.addProgress(GameProgress(installProgress, GameProgressType.Compile))
 
@@ -126,7 +126,7 @@ fun GameItem(game: Game) {
             if (game.progressList.isEmpty()) {
                 DropdownMenuItem(
                     text = { Text("Delete game") },
-                    leadingIcon = { Icon(Icons.Outlined.Delete, contentDescription = null) },
+                    leadingIcon = { Icon(Icons.Outlined.DeleteForever, contentDescription = null) },
                     onClick = {
                         menuExpanded.value = false
                         val path = File(game.info.path)
@@ -144,27 +144,77 @@ fun GameItem(game: Game) {
                         }
                     }
                 )
-                DropdownMenuItem(
-                    text = { Text("Delete game cache") },
-                    leadingIcon = { Icon(Icons.Outlined.Delete, contentDescription = null) },
-                    onClick = {
-                        menuExpanded.value = false
-                        if (!FileUtil.deleteCache(context, game.info.path.substringAfterLast("/"))) {//toBeTested
-                            AlertDialogQueue.showDialog(
-                                title = "Unexpected Error",
-                                message = "Failed to delete game cache",
-                                confirmText = "Close",
-                                dismissText = ""
-                            ) 
+                if(!game.hasFlag(GameFlag.Locked)){//if unlocked, show more DropdownMenuItems
+                    DropdownMenuItem(
+                        text = { Text("Delete save (TODO)") },
+                        leadingIcon = { Icon(Icons.Outlined.PersonRemove, contentDescription = null) },
+                        onClick = {
+                            menuExpanded.value = false
+                            //To be implemented
                         }
+                    )
+                    val compiledAtAll = (File(context.getExternalFilesDir(null)!!, "cache/cache/"+game.info.path.substringAfterLast("/")).list().length) > 0;
+                    if (compiledAtAll) {//determine if compiled at all
+                        DropdownMenuItem(
+                            text = { Text("Delete compilation cache") },
+                            leadingIcon = { Icon(Icons.Outlined.LayersClear, contentDescription = null) },
+                            onClick = {
+                                menuExpanded.value = false
+                                if(File(game.info.path).exists()){
+                                    if (!FileUtil.deleteCache(context, game.info.path.substringAfterLast("/"))) {//toBeTested
+                                        AlertDialogQueue.showDialog(
+                                            title = "Unexpected Error",
+                                            message = "Failed to delete game cache",
+                                            confirmText = "Close",
+                                            dismissText = ""
+                                        ) 
+                                    }
+                                }
+                            }
+                        )
+                        if(true){//determine if not fully compiled
+                            DropdownMenuItem(
+                                text = { Text("Resume lazy compilation") },
+                                leadingIcon = { Icon(Icons.Outlined.Widgets, contentDescription = null) },
+                                onClick = {
+                                    menuExpanded.value = false
+                                    //toBeImplemented
+                                    //EXACT same (I assume) as Begin lazy compilation
+                                }
+                            )
+                        }
+                    }else{
+                        DropdownMenuItem(
+                            text = { Text("Begin lazy compilation") },//
+                            leadingIcon = { Icon(Icons.Outlined.Construction, contentDescription = null) },
+                            onClick = {
+                                menuExpanded.value = false
+                                //To be implemented
+                                //RPCS3.instance.g_compilationQueue.push();
+                            }
+                        )
                     }
-                )
+                }
+            } else if (game.progressList.findProgress(GameProgressType.Compile)) {//
                 DropdownMenuItem(
-                    text = { Text("Delete save") },
-                    leadingIcon = { Icon(Icons.Outlined.Delete, contentDescription = null) },
+                    text = { Text("Cancel lazy compilation") },
+                    leadingIcon = { Icon(Icons.Outlined.Handyman, contentDescription = null) },
                     onClick = {
                         menuExpanded.value = false
                         //To be implemented
+                        //RPCS3.instance.g_compilationQueue.pop()????????????????????
+                        //game.removeProgress()??????????????
+                        //JUST GRACEFULLY STOP COMPILATION
+                    }
+                )
+                DropdownMenuItem(
+                    text = { Text("Elevate to eager compilation") },
+                    leadingIcon = { Icon(Icons.Outlined.Engineering, contentDescription = null) },
+                    onClick = {
+                        menuExpanded.value = false
+                        //To be implemented
+                        //imitate "Cancel lazy compilation"
+                        //enter game
                     }
                 )
             }
@@ -178,10 +228,10 @@ fun GameItem(game: Game) {
                     if (game.hasFlag(GameFlag.Locked)) {
                         AlertDialogQueue.showDialog(
                             title = "Key Required!",//keep similar message (subject verb) to "Firmware Required", but also
-                            message = "This game requires a RAP key to play.",//clarify key
+                            message = "This game requires a key to play.",//clarify key
                             onConfirm = { installKeyLauncher.launch("*/*") },
                             onDismiss = {},
-                            confirmText = "Install RAP file"
+                            confirmText = "Install key"
                         )
 
                         return@click
@@ -195,7 +245,7 @@ fun GameItem(game: Game) {
                     } else if (FirmwareRepository.progressChannel.value != null) {
                         AlertDialogQueue.showDialog(
                             title = "Firmware Pending...",
-                            message = "Please wait until firmware installs successfully to continue."
+                            message = "Please wait until the firmware installs successfully to continue."
                         )
                     } else if (game.info.path != "$" && game.findProgress(
                             arrayOf(
@@ -205,8 +255,8 @@ fun GameItem(game: Game) {
                     ) {
                         if (game.findProgress(GameProgressType.Compile) != null) {
                             AlertDialogQueue.showDialog(
-                                title = "Game compilation isn't finished yet",
-                                message = "Please wait until game compiles to continue."
+                                title = "Game Compilation Pending...",
+                                message = "Please wait until the game compiles successfully to continue."
                             )
                         } else {
                             GameRepository.onBoot(game)

@@ -216,7 +216,7 @@ object FileUtil {
     }
 
     fun deleteCache(ctx: Context, gameId: String): Boolean {
-         return File(ctx.getExternalFilesDir(null)!!, "cache/cache/$gameId").deleteRecursively()
+        return File(ctx.getExternalFilesDir(null)!!, "cache/cache/$gameId").deleteRecursively()
     }
 }
 
