@@ -146,7 +146,7 @@ fun GameItem(game: Game) {
                 )
                 if(!game.hasFlag(GameFlag.Locked)){//if unlocked, show more DropdownMenuItems
                     DropdownMenuItem(
-                        text = { Text("Delete save (TODO)") },
+                        text = { Text("Delete save (UNIMPLEMENTED)") },
                         leadingIcon = { Icon(Icons.Outlined.PersonRemove, contentDescription = null) },
                         onClick = {
                             menuExpanded.value = false
@@ -174,7 +174,7 @@ fun GameItem(game: Game) {
                         )
                         if(true){//determine if not fully compiled
                             DropdownMenuItem(
-                                text = { Text("Resume lazy compilation") },
+                                text = { Text("Resume lazy compilation (UNIMPLEMENTED)") },
                                 leadingIcon = { Icon(Icons.Outlined.Widgets, contentDescription = null) },
                                 onClick = {
                                     menuExpanded.value = false
@@ -185,7 +185,7 @@ fun GameItem(game: Game) {
                         }
                     }else{
                         DropdownMenuItem(
-                            text = { Text("Begin lazy compilation") },//
+                            text = { Text("Begin lazy compilation (UNIMPLEMENTED)") },//
                             leadingIcon = { Icon(Icons.Outlined.Construction, contentDescription = null) },
                             onClick = {
                                 menuExpanded.value = false
@@ -195,20 +195,21 @@ fun GameItem(game: Game) {
                         )
                     }
                 }
-            } else if (game.progressList.findProgress(GameProgressType.Compile)) {//
+            } else if (game.progressList.findProgress(GameProgressType.Compile)) {
                 DropdownMenuItem(
-                    text = { Text("Cancel lazy compilation") },
+                    text = { Text("Cancel lazy compilation (UNIMPLEMENTED)") },
                     leadingIcon = { Icon(Icons.Outlined.Handyman, contentDescription = null) },
                     onClick = {
                         menuExpanded.value = false
                         //To be implemented
-                        //RPCS3.instance.g_compilationQueue.pop()????????????????????
-                        //game.removeProgress()??????????????
+                        //RPCS3.instance.g_compilationQueue.pop()???????????????????? or similar
+                        //game.removeProgress()?????????????? + appropriate args
                         //JUST GRACEFULLY STOP COMPILATION
                     }
                 )
+                
                 DropdownMenuItem(
-                    text = { Text("Elevate to eager compilation") },
+                    text = { Text("Compile Eagerly (UNIMPLEMENTED)") },
                     leadingIcon = { Icon(Icons.Outlined.Engineering, contentDescription = null) },
                     onClick = {
                         menuExpanded.value = false
