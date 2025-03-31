@@ -6,5 +6,5 @@ plugins {
     id("org.jetbrains.kotlin.plugin.serialization") version "1.7.10" apply false
 }
 dependencies {
-    "implementation"("androidx.compose.material:material-icons-extended:$compose_version")
+    "implementation"("androidx.compose.material:material-icons-extended:1.7.8")
 }
