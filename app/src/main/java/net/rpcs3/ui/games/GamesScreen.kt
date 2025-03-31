@@ -21,8 +21,14 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Lock
+import androidx.compose.material.icons.outlined.DeleteForever
+import androidx.compose.material.icons.outlined.PersonRemove
+import androidx.compose.material.icons.outlined.LayersClear
+import androidx.compose.material.icons.outlined.Widgets
+import androidx.compose.material.icons.outlined.Construction
+import androidx.compose.material.icons.outlined.Handyman
+import androidx.compose.material.icons.outlined.Engineering
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
