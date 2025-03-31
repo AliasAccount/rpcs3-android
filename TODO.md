@@ -1,6 +1,15 @@
-- [] make all compilation (GamesScreen) outside of the RPCS3Activity lazy, aka, throttled so users can enjoy their phone more,while running in the background.
-- [] make right Dpad (Cross Circle Square Triangle) not warp werdly (fisheye like?)
-- [] fix insane ~3x movement speed of ControlPanel in OverlayEditActivity. Try and imitate movement of Button, or Dpad
-- [] HOWEVER make right Dpad, when scaled down, (can't seem to reproduce with directional Dpad or buttons, but likely an edgier case) always follow finger wherever moved
-  * it seems to only follow the finger when the finger is moved inside the Dpad. If the finger gets out of the Dpad (because it is moving too fast, for whatever reason), the Dpad will no longer follow the finger until it is placed within the Dpad again.
-- [] complete implementation of game options (longpress DropdownMenu) in GamesScreen
+<!--may not reflect wants of main repo maintainers-->
+- [ ] add option to change PS button to a custom image.
+  - as well, add a preset option which sets the image to what it is right now (rpcs3.net/branding#CoreColor)
+  - add a preset option which sets the image to a white 3 with a circle around it (rpcs3.net/branding#MinimalWhite inside circle)
+- [ ] make (shapes Dpad) not warp werdly (fisheye like?). keep each button circular
+- [ ] make (shapes Dpad)'s ControlPanel:
+  - have a separate scale for the whole dpad, which influences how far the dpad buttons are spread apart
+  - and a separate scale for the buttons, which influences the size of the buttons
+- [ ] fix insane ~3x movement speed of ControlPanel in OverlayEditActivity when attempting to move ControlPanel.
+  - Appears to be moving relatively with the finger movement direction. Try and imitate movement of Button, or Dpad, and move to position of finger rather than moving how much the finger moves
+- [ ] HOWEVER make (shapes Dpad), when scaled down, (can't seem to reproduce with directional Dpad or buttons, but likely an edgier case) always follow finger wherever moved. 
+  - Get finger movement events from whole screen, not just (shapes Dpad) or individual
+  - it seems to only follow the finger when the finger is moved inside the Dpad. If the finger gets out of the Dpad (because it is moving too fast, for whatever reason), the Dpad will no longer follow the finger until it is placed within the Dpad again, which it will jerk to the appropriate position (where within the dpad the finger was first placed)
+- [ ] complete implementation of game options (longpress DropdownMenu) in GamesScreen
+- [ ] add option to make all compilation (GamesScreen) outside of the RPCS3Activity "lazy": throttled so users can enjoy their phone more, while compiling in the background.
