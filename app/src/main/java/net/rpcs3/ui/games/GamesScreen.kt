@@ -125,7 +125,7 @@ fun GameItem(game: Game) {
             expanded = menuExpanded.value, onDismissRequest = { menuExpanded.value = false }) {
             if (game.progressList.isEmpty()) {
                 DropdownMenuItem(
-                    text = { Text("Delete") },
+                    text = { Text("Delete game") },
                     leadingIcon = { Icon(Icons.Outlined.Delete, contentDescription = null) },
                     onClick = {
                         menuExpanded.value = false
@@ -144,6 +144,29 @@ fun GameItem(game: Game) {
                         }
                     }
                 )
+                DropdownMenuItem(
+                    text = { Text("Delete game cache") },
+                    leadingIcon = { Icon(Icons.Outlined.Delete, contentDescription = null) },
+                    onClick = {
+                        menuExpanded.value = false
+                        if (!FileUtil.deleteCache(context, game.info.path.substringAfterLast("/"))) {//toBeTested
+                            AlertDialogQueue.showDialog(
+                                title = "Unexpected Error",
+                                message = "Failed to delete game cache",
+                                confirmText = "Close",
+                                dismissText = ""
+                            ) 
+                        }
+                    }
+                )
+                DropdownMenuItem(
+                    text = { Text("Delete save") },
+                    leadingIcon = { Icon(Icons.Outlined.Delete, contentDescription = null) },
+                    onClick = {
+                        menuExpanded.value = false
+                        //To be implemented
+                    }
+                )
             }
         }
 
@@ -154,8 +177,8 @@ fun GameItem(game: Game) {
                 .combinedClickable(onClick = click@{
                     if (game.hasFlag(GameFlag.Locked)) {
                         AlertDialogQueue.showDialog(
-                            title = "Missing key",
-                            message = "This game requires key to play",
+                            title = "Key Required!",//keep similar message (subject verb) to "Firmware Required", but also
+                            message = "This game requires a RAP key to play.",//clarify key
                             onConfirm = { installKeyLauncher.launch("*/*") },
                             onDismiss = {},
                             confirmText = "Install RAP file"
@@ -166,12 +189,12 @@ fun GameItem(game: Game) {
 
                     if (FirmwareRepository.version.value == null) {
                         AlertDialogQueue.showDialog(
-                            title = "Firmware Missing",
+                            title = "Firmware Required!",//rename from this and Key Required
                             message = "Please install the required firmware to continue."
                         )
                     } else if (FirmwareRepository.progressChannel.value != null) {
                         AlertDialogQueue.showDialog(
-                            title = "Firmware Missing",
+                            title = "Firmware Pending...",
                             message = "Please wait until firmware installs successfully to continue."
                         )
                     } else if (game.info.path != "$" && game.findProgress(
@@ -182,7 +205,7 @@ fun GameItem(game: Game) {
                     ) {
                         if (game.findProgress(GameProgressType.Compile) != null) {
                             AlertDialogQueue.showDialog(
-                                title = "Game compiling isn't finished yet",
+                                title = "Game compilation isn't finished yet",
                                 message = "Please wait until game compiles to continue."
                             )
                         } else {
