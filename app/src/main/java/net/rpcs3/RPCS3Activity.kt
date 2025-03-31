@@ -27,8 +27,7 @@ class RPCS3Activity : Activity() {
     private var usesAxisL2 = false
     private var usesAxisR2 = false
     private var bootThread: Thread? = null
-    @Override
-    public fun onBackPressed() {
+    public override fun onBackPressed() {
         //send ps button when back pressed
         RPCS3.instance.overlayPadData(
             (gamePadState.digital[0] or Digital1Flags.CELL_PAD_CTRL_PS.bit),//gurarantee PS pressed
